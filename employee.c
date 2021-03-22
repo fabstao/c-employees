@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 	switch(argc) {
 		case 1:
 			todos = fbread(nombre,j);
-	        showemp(todos,j);
+			showemp(todos,j);
 			break;
 
 		case 4:
