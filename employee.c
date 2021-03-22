@@ -12,34 +12,42 @@
 void showemp(employee *emp, int *j);
 
 int main(int argc, char *argv[]){
-	if(argc < 4) {
-		printf("\nERROR: Uso: %s <Nombre> <NSS> <RFC>\n", argv[0]);
-		exit(1);
+	char *nombre = "employees.fabdb";
+	int *j = malloc(sizeof(int));
+	employee *todos = malloc(sizeof(employee)); 
+	employee miemp;
+	switch(argc) {
+		case 1:
+			todos = fbread(nombre,j);
+	        showemp(todos,j);
+			break;
+
+		case 4:
+			printf("\nLeyendo base de datos de empleados\n");
+			fbread(nombre,j);
+			char *name=malloc(sizeof(char)*100);
+			char *SSN=malloc(sizeof(char)*15);
+			char *TaxID=malloc(sizeof(char)*15);
+			//employee miemp = { tamn+1, name, SSN, TaxID };
+			miemp.id = 1 + *j;
+			strcpy(miemp.name,argv[1]);
+			strcpy(miemp.SSN,argv[2]);
+			strcpy(miemp.TaxID,argv[3]);
+			printf("\nGuardando datos de empleado\n");
+			fsaveemp(&miemp,nombre);
+			todos = fbread(nombre,j);
+			showemp(todos,j);
+			free(name);
+			free(SSN);
+			free(TaxID);
+			free(todos);
+			break;
+
+		default :
+			printf("\nERROR: Uso: %s [Nombre NSS RFC]\n", argv[0]);
+			break;
 	}
-	else {
-		char *nombre="employees.fabdb";
-		printf("\nLeyendo base de datos de empleados\n");
-		int *j=malloc(sizeof(int));
-		fbread(nombre,j);
-		char *name=malloc(sizeof(char)*100);
-		char *SSN=malloc(sizeof(char)*15);
-		char *TaxID=malloc(sizeof(char)*15);
-		//employee miemp = { tamn+1, name, SSN, TaxID };
-		employee miemp;
-		miemp.id = 1 + *j;
- 		strcpy(miemp.name,argv[1]);
-        strcpy(miemp.SSN,argv[2]);
-		strcpy(miemp.TaxID,argv[3]);
-		printf("\nGuardando datos de empleado\n");
-		fsaveemp(&miemp,nombre);
-		employee *todos = fbread(nombre,j);
-		showemp(todos,j);
-		free(name);
-		free(SSN);
-		free(TaxID);
-		free(todos);
-		return 0;
-	}
+	return 0;
 }
 
 void showemp(employee *emp, int *j) {
